@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="wishlist_notification_email_template_customer"
+              label="Innovadeltech Wishlist - Customer Email"
+              file="customer.html" type="html"
+              module="Innovadeltech_Wishlist" area="frontend"/>
+</config>

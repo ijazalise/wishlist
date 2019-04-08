@@ -1,0 +1,18 @@
+This package is developed by innovadeltech.
+This is open license extension for magento 2.
+version : 0.2.0
+
+Licensee's license to use the Software shall terminate on the earlier of (i) the expiration of the Evaluation Period, or (ii) the date
+both parties enter into a definitive agreement for the provision by Spryker to Licensee of a non-evaluation license to the Software.
+Upon termination of the license as provided above, Licensee shall promptly destroy the Software and any back-up copy of the Software
+made during the Evaluation Period if Spryker and the Licensee have not agreed a non-evaluation license to the Software.
+
+This Agreement shall be governed by the laws of Germany to the exclusion of IPR (International Law) and the United Nations Convention
+on Contracts for the International Sale of Goods (CISG). The parties consent to the jurisdiction of the courts in Berlin (Germany).
+
+This Agreement is not assignable or transferable by Licensee and any attempt to do so is null and void.
+
+This Agreement constitutes the entire agreement between the parties concerning Licensee’s use of the Software. This Agreement supersedes
+any prior verbal understanding between the parties and any Licensee purchase order or other ordering document, regardless of whether such
+document is received by Spryker before or after execution of this Agreement. This Agreement may be amended only in a writing signed by
+an authorized officer of Spryker.

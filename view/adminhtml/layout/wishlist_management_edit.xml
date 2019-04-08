@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ */
+
+/**
+ * @category   Innovadeltech
+ * @package    Innovadeltech_Wishlist
+ * @subpackage view
+ * @author     Ijaz Ali <info@innovadeltech.com>
+ * @copyright  Copyright (c) 2018 Innovadeltech Technologies (http://www.innovadeltech.com)
+ * @version    ${release.version}
+ * @link       http://www.innovadeltech.com/
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-1column" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Innovadeltech_Wishlist::css/style.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Innovadeltech\Wishlist\Block\Adminhtml\Management\Edit" name="management_edit" template="management/edit.phtml">
+                <block class="Magento\Catalog\Pricing\Render" name="product.price.final">
+                    <arguments>
+                        <argument name="price_render" xsi:type="string">product.price.render.default</argument>
+                        <argument name="price_type_code" xsi:type="string">final_price</argument>
+                        <argument name="zone" xsi:type="string">item_view</argument>
+                    </arguments>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

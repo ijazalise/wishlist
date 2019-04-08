@@ -1,0 +1,152 @@
+<?php
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ */
+
+/**
+ * @category   Innovadeltech
+ * @package    Innovadeltech_Wishlist
+ * @subpackage Observer
+ * @copyright  Copyright (c) 2018 Innovadeltech Technologies (http://www.innovadeltech.com)
+ * @version    ${release.version}
+ * @link       http://www.innovadeltech.com/
+ * @author     Ijaz Ali <info@innovadeltech.com>
+ */
+namespace Innovadeltech\Wishlist\Observer;
+
+use Magento\Framework\Event\ObserverInterface;
+
+/**
+ * Class WishlistAddProductObserver
+ * @package Innovadeltech\Wishlist\Observer
+ */
+class WishlistAddProductObserver implements ObserverInterface
+{
+    /**
+     * @var \Magento\Catalog\Helper\Image
+     */
+    protected $_imageHelper;
+
+    /**
+     * @var \Magento\Customer\Model\CustomerFactory
+     */
+    protected $_customerFactory;
+
+    /**
+     * @var \Innovadeltech\Wishlist\Model\ManagementFactory
+     */
+    protected $_notificationFactory;
+
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $_logger;
+
+    /**
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     */
+    protected $_scopeConfig;
+
+    /**
+     * Initialize dependencies.
+     *
+     * @param \Magento\Catalog\Helper\Image $imageHelper
+     * @param \Magento\Customer\Model\CustomerFactory $customerFactory
+     * @param \Innovadeltech\Wishlist\Model\ManagementFactory $notificationFactory
+     * @param \Psr\Log\LoggerInterface
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     */
+    public function __construct(
+        \Magento\Catalog\Helper\Image $imageHelper,
+        \Magento\Customer\Model\CustomerFactory $customerFactory,
+        \Innovadeltech\Wishlist\Model\ManagementFactory $notificationFactory,
+        \Psr\Log\LoggerInterface $logger,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Magento\CatalogInventory\Model\Stock\StockItemRepository $stockItemRepository
+    ) {
+        $this->_imageHelper = $imageHelper;
+        $this->_customerFactory = $customerFactory;
+        $this->_notificationFactory = $notificationFactory;
+        $this->_logger = $logger;
+        $this->_scopeConfig = $scopeConfig;
+        $this->_stockItemRepository = $stockItemRepository;
+    }
+
+    /**
+     * Observer method which gets called if a product is added to the wishlist. Creates a new
+     * notification model.
+     *
+     * @param \Magento\Framework\Event\Observer $observer
+     * @return void
+     */
+    public function execute(\Magento\Framework\Event\Observer $observer)
+    {
+        // check if module is enabled
+        if (!$this->_scopeConfig->getValue('wishlist_notification/general/enabled')) {
+            return;
+        }
+
+        try {
+            // init empty data array
+            $data = array();
+
+            // get customer data
+            $customerId = $observer->getData('wishlist')->getCustomerId();
+//            $wishlist = $observer->getData('wishlist')->getWishlistId();
+//            echo '<pre>';
+//            print_r($observer->getData('wishlist'));
+//            die('dead dead.');
+            /** @var $customer \Magento\Customer\Model\Customer */
+            $customer = $this->_customerFactory->create()->load($customerId);
+
+            $data['customer_mail'] = $customer->getEmail();
+            $data['customer_name'] = $customer->getName();
+            $data['customer_id'] = $customerId;
+
+            // get product data
+            /** @var $product \Magento\Catalog\Model\Product */
+            $product = $observer->getData('product');
+            $data['sku'] = $product->getSku();
+            $price = $product->getPrice();
+            $specialPrice = $product->getSpecialPrice();
+            $data['price'] = ($price > $specialPrice) ? $price : $product->getFinalPrice();
+            $data['special_price'] = $specialPrice;
+            
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+            $productStockObj = $objectManager->get('Magento\CatalogInventory\Api\StockRegistryInterface')->getStockItem($product->getId());
+            
+            
+            $data['stock'] = $productStockObj->getQty();
+
+            $data['image_url'] = $this->_imageHelper->init($product, 'product_thumbnail_image')->getUrl();
+            $data['product_id'] = $product->getId();
+            $data['product_name'] = $product->getName();
+
+            // get wishlist item data
+            /** @var $item \Magento\Wishlist\Model\Item */
+            $item = $observer->getData('item');
+            $data['added_at'] = $item->getAddedAt();
+
+            // set notification status
+            $data['status'] = 0;
+
+            // create notification model
+            /** @var $notification \Innovadeltech\Wishlist\Model\Management */
+            $notificationModel = $this->_notificationFactory->create();
+            $notificationModel->setData($data)->save();
+        } catch (\Exception $e) {
+            // catch any exception here in order to avoid error message in frontend
+            // just log exceptions
+            $this->_logger->critical($e);
+        }
+    }
+    
+    public function getStockItem($productId)
+    {
+        return $this->_stockItemRepository->get($productId);
+    }
+}

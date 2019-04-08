@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ */
+
+/**
+ * @category   Innovadeltech
+ * @package    Innovadeltech_Wishlist
+ * @subpackage etc
+ * @author     Ijaz Ali <info@innovadeltech.com>
+ * @copyright  Copyright (c) 2018 Innovadeltech Technologies (http://www.innovadeltech.com)
+ * @version    ${release.version}
+ * @link       http://www.innovadeltech.com/
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Innovadeltech_Wishlist::wishlist_conversion" title="Wishlist Conversion" 
+             module="Innovadeltech_Wishlist" sortOrder="10"
+             parent="Magento_Backend::marketing"
+             resource="Innovadeltech_Wishlist::wishlist"/>
+        <add id="Innovadeltech_Wishlist::wishlist"
+             title="Wishlist Management" translate="title" module="Innovadeltech_Wishlist"
+             sortOrder="100" parent="Innovadeltech_Wishlist::wishlist_conversion"
+             action="wishlist/management"
+             resource="Innovadeltech_Wishlist::wishlist"/>
+        <add id="Innovadeltech_Wishlist::popular_products" title="Popular Products" 
+             module="Innovadeltech_Wishlist" sortOrder="200" 
+             resource="Innovadeltech_Wishlist::wishlist" 
+             action="wishlist/popular/products"
+             parent="Innovadeltech_Wishlist::wishlist_conversion"/>
+        
+    </menu>
+</config>

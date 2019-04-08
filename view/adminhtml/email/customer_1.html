@@ -1,0 +1,61 @@
+<!--{{template config_path="design/email/header_template"}}
+
+<p>{{trans "%customer_name wants to share this Wish List from %store_name with you:" customer_name=$customerName store_name=$store.getFrontendName()}}</p>
+
+{{depend message}}
+<table class="message-info">
+    <tr>
+        <td>
+            <h3>{{trans "Message from %customer_name:" customer_name=$customerName}}</h3>
+            {{var message|raw}}
+        </td>
+    </tr>
+</table>
+<br />
+{{/depend}}
+
+{{var items|raw}}
+<br/>
+
+<p><a href="{{var viewOnSiteLink}}">{{trans "View all Wish List items"}}</a></p>
+
+{{template config_path="design/email/footer_template"}}-->
+<table>
+    <tr class="email-intro">
+        <td>
+            <p class="greeting">{{trans "%customer_name," customer_name=$CustomerName}}</p>
+            <p>
+                {{trans "Your custom message."}}
+            </p>
+        </td>
+    </tr>
+    <tr class="email-summary">
+        <td>
+            <h1>{{trans 'Your Wishlist Product productName with id <span class="no-link">#%product_id</span> is available now.' increment_id=$ProductId |raw}}</h1>
+            <p>{{trans '<span class="no-link">%productImage</span>' created_at=$productImage |raw}}</p>
+        </td>
+    </tr>
+<!--    <tr class="email-information">
+        <td>
+            <table class="order-details">
+                <tr>
+                    <td class="address-details">
+                        <h3>{{trans "Billing Info"}}</h3>
+                        <p>{{var myvar4|raw}}</p>
+                    </td>
+                </tr>
+            </table>
+            <table class="email-items">
+                <thead>
+                    <tr>
+                        <th class="item-info">{{trans "Item"}}</th>
+                        <th class="item-info">{{trans "Sku"}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{var myvar8|raw}}
+                </tbody>
+            </table>
+        </td>
+    </tr>-->
+</table>
